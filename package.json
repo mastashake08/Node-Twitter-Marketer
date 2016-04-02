@@ -1,0 +1,29 @@
+{
+  "name": "node-twitter-marketer",
+  "version": "0.0.0",
+  "description": "Use the power of Twitter to market your content.",
+  "main": "index.js",
+  "dependencies": {
+    "line-by-line": "^0.1.4",
+    "socket.io": "^1.4.5",
+    "twit": "^2.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mastashake08/Node-Twitter-Marketer.git"
+  },
+  "keywords": [
+    "twitter",
+    "marketing"
+  ],
+  "author": "Jyrone Parker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mastashake08/Node-Twitter-Marketer/issues"
+  },
+  "homepage": "https://github.com/mastashake08/Node-Twitter-Marketer#readme"
+}
