@@ -8,38 +8,40 @@ var T = new Twit({
   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 })
 
-var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ]
-var lasVegas =  ['-115.24', '36.07', '-115°03', '36.22' ]
+var locations = [['-115.414625','36.129623','-115.062072','36.380623'],['36.49','-89.57','39.15','-81.97']];
+var LineByLineReader = require('line-by-line');
+var lr = new LineByLineReader('Keywords.csv'), tracks = [];
+lr.on('error', function (err) {
+	// 'err' contains error object
+  console.log('ERROR!! ' + err);
+});
 
-//
-//  filter the twitter public stream by the word 'mango'.
-//
-var stream = T.stream('statuses/filter', { track: 'new music, rap music, #rap, #hotmusic, 2016 hits', locations: sanFrancisco })
+lr.on('line', function (line) {
+	// 'line' contains the current line without the trailing newline character.
+  if(line != null && line != ''){
+    tracks.push(line);
+  }
+  console.log('Line read!');
+});
 
-stream.on('tweet', function (tweet) {
-  //console.log(tweet)
-  T.post('statuses/update', { status: '@'+ tweet.user.screen_name +', Please review and R/T my music video about our times: https://youtu.be/XoKqCQDNmmY  #FreshwaddaBrooks', in_reply_to_status_id: tweet.id }, function(err, data, response) {
-    console.log(data)
+lr.on('end', function () {
+
+  //
+  //  filter the twitter public stream by the word 'mango'.
+  //
+  console.log(tracks);
+  var stream = T.stream('statuses/filter', { track: tracks })
+
+  stream.on('tweet', function (tweet) {
+    console.log(tweet)
+    /*T.post('statuses/update', { status: '@'+ tweet.user.screen_name +', Please review and R/T my music video about our times: https://youtu.be/XoKqCQDNmmY  #FreshwaddaBrooks', in_reply_to_status_id: tweet.id }, function(err, data, response) {
+      console.log(data)
+    })*/
   })
-})
 /*
-//
-// filter the public stream by the latitude/longitude bounded box of San Francisco
-//
+  stream.on('follow', function(event){
+    console.log('You were followed');
+    T.post('direct_messages/new',{user_id: event.target.id, text: process.env.DM });
+  });*/
 
-
-var stream = T.stream('statuses/filter', { locations: sanFrancisco })
-
-stream.on('tweet', function (tweet) {
-  console.log(tweet)
-})
-
-//
-// filter the public stream by english tweets containing `#apple`
-//
-var stream = T.stream('statuses/filter', { track: '#apple', language: 'en' })
-
-stream.on('tweet', function (tweet) {
-  console.log(tweet)
-})
-*/
+});
