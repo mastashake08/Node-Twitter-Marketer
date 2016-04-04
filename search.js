@@ -59,19 +59,19 @@ lr.on('end', function () {
   console.log(tracks);
   console.log('Tracks loaded!');
 
-  T.get('search/tweets', { q: tracks, count: 200, language: 'en', locations:locations, since: '2016-04-01' }, function(err, data, response) {
+  T.get('search/tweets', { q: tracks, count: 200, language: 'en', locations:locations}, function(err, data, response) {
     //data.statuses
     for(var i = 0; i < data.statuses.length; i++){
-      //console.log(data.statuses[i]);
+      console.log(data.statuses[i].text);
       var rand = Math.floor((Math.random() * tweets.length));
       console.log('@'+ data.statuses[i].user.screen_name +tweets[rand]);
-      /*T.post('favorites/create', {id: data.statuses[i].id }, function(err, data, response) {
+      T.post('favorites/create', {id: data.statuses[i].id }, function(err, data, response) {
         console.log(data)
       })
 
       T.post('statuses/update', { status: '@'+ data.statuses[i].user.screen_name +tweets[rand], in_reply_to_status_id: data.statuses[i].id }, function(err, data, response) {
         console.log(data)
-      })*/
+      })
 
     }
   })
